@@ -1,0 +1,13 @@
+trigger:
+  - main
+  - pr
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: Tests
+    jobs:
+      - job: Unit
+        steps:
+          - script: 'npm ci && npm test'
