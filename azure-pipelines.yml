@@ -11,3 +11,7 @@ stages:
       - job: Unit
         steps:
           - script: 'npm ci && npm test'
+      - job: Lint
+        steps:
+          - script: 'npm ci && npm run eslint:ci'
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
