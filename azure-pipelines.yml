@@ -8,10 +8,22 @@ pool:
 stages:
   - stage: Tests
     jobs:
-      - job: Unit
-        steps:
-          - script: 'npm ci && npm test'
       - job: Lint
         steps:
           - script: 'npm ci && npm run eslint:ci'
+      - job: Unit
+        steps:
+          - script: 'npm ci && npm test'
+  - stage: Deploy_in_dev
+    jobs:
+      - job: DeployDev
+        steps:
+          - script: 'echo "Deploy $DEPLOYMENT_ID in dev"'
+            env:
+              DEPLOYMENT_ID: $(System.PullRequest.PullRequestId)
+  - stage: Deploy_in_prod
+    jobs:
+      - job: DeployProd
+        steps:
+          - script: 'echo "Deploy Prod"'
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
